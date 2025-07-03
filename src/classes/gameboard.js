@@ -1,10 +1,14 @@
-class Gameboard {
+// gameboard.js
+
+export class Gameboard {
     constructor() {
+        // this.grid contains either null entries or references to a particular ship
         this.grid = Array.from(Array(10), () => new Array(10).fill(null));
-        this.missed = [];
         // this.hit tracks the coordinates of wherever an attack was received, regardless if it hit a ship or not. 
-        // The this.missed array is simply kept to display the missed attacks in chronological order on the UI
-        this.hit = Array.from(Array(10), () => new Array(10).fill(null));
+        this.hit = Array.from(Array(10), () => new Array(10).fill(false));
+        // this.missed array is simply kept to display the missed attacks in chronological order on the UI.
+        this.missed = [];
+        // this.ships stores references to all the ships on a board, to check if they have sunk or not
         this.ships = [];
     }
 
@@ -79,5 +83,3 @@ class Gameboard {
         return true;
     }
 }
-
-module.exports = Gameboard;

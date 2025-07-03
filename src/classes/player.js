@@ -1,10 +1,9 @@
-const Gameboard = require("./gameboard");
+// player.js
+import { Gameboard } from './gameboard.js';
 
-class Player {
+export class Player {
     constructor(type) {
         this.type = type;
         this.gb = new Gameboard();
     }
 }
-
-module.exports = Player;

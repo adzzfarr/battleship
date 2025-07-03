@@ -1,4 +1,5 @@
-class Ship {
+// ship.js
+export class Ship {
     constructor(length) {
         this.length = length;
         this.hits = 0;
@@ -12,5 +13,3 @@ class Ship {
         return this.hits >= this.length;
     }
 }
-
-module.exports = Ship;
