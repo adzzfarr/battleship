@@ -1,5 +1,5 @@
 // render-gameboard.js
-export function renderGameboard(gb) {
+export function renderGameboard(isDummy, gb, turnHandler) {
     const gameboardContainer = document.createElement('div');
     gameboardContainer.className = 'gameboard';
 
@@ -8,7 +8,8 @@ export function renderGameboard(gb) {
 
     for (let row = 0; row < gb.grid.length; row++) {
         for (let column = 0; column < gb.grid[row].length; column++) {
-            const square = renderSquare(gb, row, column);
+            
+            const square = renderSquare(isDummy, gb, row, column, turnHandler);
             gridContainer.appendChild(square);
         }
     }
@@ -18,10 +19,9 @@ export function renderGameboard(gb) {
     return gameboardContainer;
 }
 
-function renderSquare(gb, row, column) {
+function renderSquare(isDummy, gb, row, column, turnHandler) {
     const square = document.createElement('div');
     square.className = 'square';
-
     // Check if that location has been hit or not
     if (gb.hit[row][column]) {
         // If it has been hit, check whether it is a ship (successful hit) or empty area (miss) and render accordingly.
@@ -32,18 +32,32 @@ function renderSquare(gb, row, column) {
         }
         // In either case, these squares should no longer be clickable, thus we do not add any event listeners in this if block.
     } else {
-        // If it has not been hit, render a blank square that is clickable (to be attacked).
+        // If it has not been hit, render a blank square.
         square.classList.add('blank');
-        square.addEventListener('click', onClick);
-    }
 
+        if (!isDummy) {
+            // This square can be attacked, as the active player is clicking the opponent's board.
+            square.addEventListener('click', attack);
+        } else {
+            // The active player is clicking their own board, which is not allowed.
+            square.addEventListener('click', onClickOwnBoard);
+        }
+
+        function attack() {
+            gb.receiveAttack([row, column]);
+
+            // Re-render the square
+            const newSquare = renderSquare(isDummy, gb, row, column, turnHandler);
+            square.replaceWith(newSquare);  
+
+            // Fire the turn handler
+            turnHandler();
+        }
+
+        function onClickOwnBoard() {
+            console.log("Please click the opponent's board.");
+        }
+    }      
+    
     return square;
-
-    function onClick() {
-        gb.receiveAttack([row, column]);
-
-        // Re-render the square
-        const newSquare = renderSquare(gb, row, column);
-        square.replaceWith(newSquare);
-    }
 }
