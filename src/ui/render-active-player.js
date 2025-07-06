@@ -1,5 +1,10 @@
 // render-active-player.js
-export function renderActivePlayer(player) {
+export function renderActivePlayer(player, gameIsWon) {
     const activePlayerContainer = document.getElementById('active-player');
-    activePlayerContainer.innerHTML = `${player.name}'s Turn`;
+
+    if (gameIsWon) {
+        activePlayerContainer.innerHTML = `${player.name} Won!`
+    } else {
+        activePlayerContainer.innerHTML = `${player.name}'s Turn`;
+    }
 }

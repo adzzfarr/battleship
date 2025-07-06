@@ -80,7 +80,7 @@ export class GameController {
     turnHandler() {
         // Check if opponent's ships are all sunk
         if (this.inactive.gb.allShipsSunk()) {
-            alert(`${this.active.name} wins!`);
+            renderActivePlayer(this.active, true);
             return;
         }
 
@@ -88,7 +88,7 @@ export class GameController {
         [this.active, this.inactive] = [this.inactive, this.active];
 
         // Update active player display
-        renderActivePlayer(this.active);
+        renderActivePlayer(this.active, false);
 
         // Re-render gameboards
         this.renderGameboards(() => this.turnHandler());
