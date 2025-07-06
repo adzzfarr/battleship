@@ -1,6 +1,7 @@
 // controller.js
 import { Ship } from './ship.js';
 import { renderGameboard } from '../ui/render-gameboard.js';
+import { renderActivePlayer } from '../ui/render-active-player.js';
 
 export class GameController {
     constructor(playerOne, playerTwo) {
@@ -13,6 +14,7 @@ export class GameController {
     playGame() {
         this.placeShips();
         this.renderGameboards(() => this.turnHandler());
+        renderActivePlayer(this.active);
     }
 
     placeShips() {
@@ -84,6 +86,9 @@ export class GameController {
 
         // Switch turns
         [this.active, this.inactive] = [this.inactive, this.active];
+
+        // Update active player display
+        renderActivePlayer(this.active);
 
         // Re-render gameboards
         this.renderGameboards(() => this.turnHandler());
