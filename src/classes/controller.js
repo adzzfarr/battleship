@@ -46,13 +46,16 @@ export class GameController {
         const gameboardsContainer = document.getElementById('gameboards');
 
         const playerOneRealGameboard = renderGameboard(this.playerOne.type, false, this.playerOne.gb, turnHandler);
-        playerOneRealGameboard.className = 'gameboard player-one';
+        playerOneRealGameboard.classList.add('player-one');
+
         const playerOneDummyGameboard = renderGameboard(this.playerOne.type, true, this.playerOne.gb);
-        playerOneDummyGameboard.className = 'gameboard player-one';
+        playerOneDummyGameboard.classList.add('player-one');
+
         const playerTwoRealGameboard = renderGameboard(this.playerTwo.type, false, this.playerTwo.gb, turnHandler);
-        playerTwoRealGameboard.className = 'gameboard player-two';
+        playerTwoRealGameboard.classList.add('player-two');
+
         const playerTwoDummyGameboard = renderGameboard(this.playerTwo.type, true, this.playerTwo.gb);
-        playerTwoDummyGameboard.className = 'gameboard player-two';
+        playerTwoDummyGameboard.classList.add('player-two');
 
         if (!gameboardsContainer.hasChildNodes()) {
             // Initial render
@@ -100,7 +103,7 @@ export class GameController {
 
                 // Activate the turn handler again
                 this.turnHandler();
-            }, 1000)
+            }, 1250)
         }
     }
 

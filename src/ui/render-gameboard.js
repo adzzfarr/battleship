@@ -3,6 +3,10 @@ export function renderGameboard(playerType, isDummy, gb, turnHandler) {
     const gameboardContainer = document.createElement('div');
     gameboardContainer.className = 'gameboard';
 
+    if (isDummy) {
+        gameboardContainer.classList.add('disabled');
+    }
+
     const gridContainer = document.createElement('div');
     gridContainer.className = 'grid';
 
