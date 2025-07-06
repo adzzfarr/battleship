@@ -42,16 +42,16 @@ export class GameController {
         this.playerTwo.gb.placeShip(new Ship(2), 'horizontal', [7, 7]);
     }
     
-    renderGameboards(attackHandler) {
+    renderGameboards(turnHandler) {
         const gameboardsContainer = document.getElementById('gameboards');
 
-        const playerOneRealGameboard = renderGameboard(false, this.playerOne.gb, attackHandler);
+        const playerOneRealGameboard = renderGameboard(this.playerOne.type, false, this.playerOne.gb, turnHandler);
         playerOneRealGameboard.className = 'gameboard player-one';
-        const playerOneDummyGameboard = renderGameboard(true, this.playerOne.gb);
+        const playerOneDummyGameboard = renderGameboard(this.playerOne.type, true, this.playerOne.gb);
         playerOneDummyGameboard.className = 'gameboard player-one';
-        const playerTwoRealGameboard = renderGameboard(false, this.playerTwo.gb, attackHandler);
+        const playerTwoRealGameboard = renderGameboard(this.playerTwo.type, false, this.playerTwo.gb, turnHandler);
         playerTwoRealGameboard.className = 'gameboard player-two';
-        const playerTwoDummyGameboard = renderGameboard(true, this.playerTwo.gb);
+        const playerTwoDummyGameboard = renderGameboard(this.playerTwo.type, true, this.playerTwo.gb);
         playerTwoDummyGameboard.className = 'gameboard player-two';
 
         if (!gameboardsContainer.hasChildNodes()) {
@@ -92,5 +92,27 @@ export class GameController {
 
         // Re-render gameboards
         this.renderGameboards(() => this.turnHandler());
-     }
+
+        // If the active player is a computer, make them attack
+        if (this.active.type === 'computer') {
+            setTimeout(() => {
+                this.computerAttack(this.inactive);
+
+                // Activate the turn handler again
+                this.turnHandler();
+            }, 1000)
+        }
+    }
+
+    computerAttack(target) {
+        let randomRow;
+        let randomColumn;
+
+        do {
+            randomRow = Math.round(Math.random() * 9);
+            randomColumn = Math.round(Math.random() * 9);
+        } while (target.gb.hit[randomRow][randomColumn])
+
+        target.gb.receiveAttack([randomRow, randomColumn]);
+    }
 }
